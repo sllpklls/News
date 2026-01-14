@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Trị Nội Dung - Báo Điện Tử</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .admin-header .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-size: 28px;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .admin-nav button {
+            padding: 10px 20px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .admin-nav button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .controls button {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .controls button.danger {
+            background: #e74c3c;
+        }
+
+        .controls button.danger:hover {
+            background: #c0392b;
+        }
+
+        .editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .editor-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .editor-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .news-list {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .news-list h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .news-item {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .news-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .news-item.selected {
+            border-color: #667eea;
+            background: #e8ecff;
+        }
+
+        .news-item h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .news-item .meta {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .news-item .excerpt {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .news-item .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .news-item .actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .preview-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .preview-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .preview-card {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .preview-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .preview-content {
+            padding: 20px;
+        }
+
+        .preview-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .preview-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .preview-meta {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .preview-content p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 1024px) {
+            .editor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="container">
+            <h1>🔧 Quản Trị Nội Dung</h1>
+            <div class="admin-nav">
+                <button onclick="window.location.href='index.html'">👁️ Xem trang chính</button>
+                <button onclick="exportData()">📥 Xuất dữ liệu</button>
+                <button onclick="location.reload()">🔄 Làm mới</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="success-message" id="successMessage">
+            ✓ Lưu thành công!
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="totalNews">0</h3>
+                <p>Tổng số tin</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="featuredNews">1</h3>
+                <p>Tin nổi bật</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="trendingNews">4</h3>
+                <p>Tin xu hướng</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="categories">7</h3>
+                <p>Chuyên mục</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="newArticle()">➕ Thêm tin mới</button>
+            <button onclick="saveAll()">💾 Lưu tất cả</button>
+            <button onclick="clearForm()" class="danger">🗑️ Xóa form</button>
+        </div>
+
+        <div class="editor-grid">
+            <div class="editor-section">
+                <h2>📝 Biên tập tin tức</h2>
+                <form id="newsForm">
+                    <div class="form-group">
+                        <label>Tiêu đề</label>
+                        <input type="text" id="title" placeholder="Nhập tiêu đề bài viết..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chuyên mục</label>
+                        <select id="category" required>
+                            <option value="">Chọn chuyên mục</option>
+                            <option value="THỜI SỰ">Thời sự</option>
+                            <option value="THẾ GIỚI">Thế giới</option>
+                            <option value="KINH DOANH">Kinh doanh</option>
+                            <option value="CÔNG NGHỆ">Công nghệ</option>
+                            <option value="GIẢI TRÍ">Giải trí</option>
+                            <option value="THỂ THAO">Thể thao</option>
+                            <option value="KHOA HỌC">Khoa học</option>
+                            <option value="ẨM THỰC">Ẩm thực</option>
+                            <option value="DU LỊCH">Du lịch</option>
+                            <option value="GIÁO DỤC">Giáo dục</option>
+                            <option value="ĐỘNG VẬT">Động vật</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>URL hình ảnh</label>
+                        <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tác giả</label>
+                        <input type="text" id="author" placeholder="Nguyễn Văn A" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ngày đăng (để trống = hiện tại)</label>
+                        <input type="datetime-local" id="publishDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tóm tắt nội dung</label>
+                        <textarea id="excerpt" placeholder="Nhập tóm tắt bài viết..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nội dung đầy đủ</label>
+                        <textarea id="content" placeholder="Nhập nội dung chi tiết..." style="min-height: 200px;" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="featured" style="width: auto; margin-right: 8px;">
+                            Đặt làm tin nổi bật
+                        </label>
+                    </div>
+
+                    <button type="submit" style="width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">
+                        💾 Lưu bài viết
+                    </button>
+                </form>
+            </div>
+
+            <div class="editor-section">
+                <h2>👁️ Xem trước</h2>
+                <div class="preview-card">
+                    <img id="previewImage" src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800" alt="Preview">
+                    <div class="preview-content">
+                        <span class="preview-badge" id="previewCategory">CHUYÊN MỤC</span>
+                        <h3 id="previewTitle">Tiêu đề bài viết sẽ hiển thị ở đây</h3>
+                        <div class="preview-meta">
+                            <span>📅 <span id="previewDate"></span></span> •
+                            <span>✍️ <span id="previewAuthor">Tác giả</span></span>
+                        </div>
+                        <p id="previewExcerpt">Tóm tắt nội dung sẽ hiển thị ở đây...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="news-list">
+            <h2>📰 Danh sách tin tức</h2>
+            <div id="newsList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu tin tức
+        let newsData = [];
+        let currentEditId = null;
+
+        // Khởi tạo
+        document.addEventListener('DOMContentLoaded', async function() {
+            updatePreviewDate();
+            await loadDataFromServer();
+            loadNewsList();
+            updateStats();
+            setupFormListeners();
+        });
+
+        // Tải dữ liệu từ server
+        async function loadDataFromServer() {
+            try {
+                const response = await fetch('/api/news');
+                const data = await response.json();
+                newsData = data.news || [];
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu:', error);
+                newsData = [];
+            }
+        }
+
+        // Lưu dữ liệu lên server
+        async function saveDataToServer() {
+            try {
+                const dataToSave = {
+                    news: newsData
+                };
+
+                const response = await fetch('/api/news', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToSave)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Lỗi khi lưu dữ liệu');
+                }
+
+                return true;
+            } catch (error) {
+                console.error('Lỗi khi lưu:', error);
+                alert('Lỗi khi lưu dữ liệu: ' + error.message);
+                return false;
+            }
+        }
+
+        // Cập nhật ngày trong preview
+        function updatePreviewDate() {
+            const now = new Date();
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            document.getElementById('previewDate').textContent = now.toLocaleDateString('vi-VN', options);
+        }
+
+        // Thiết lập listeners cho form
+        function setupFormListeners() {
+            const inputs = ['title', 'category', 'imageUrl', 'author', 'excerpt', 'publishDate'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', updatePreview);
+            });
+
+            document.getElementById('newsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveArticle();
+            });
+        }
+
+        // Cập nhật preview
+        function updatePreview() {
+            const title = document.getElementById('title').value || 'Tiêu đề bài viết sẽ hiển thị ở đây';
+            const category = document.getElementById('category').value || 'CHUYÊN MỤC';
+            const imageUrl = document.getElementById('imageUrl').value || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';
+            const author = document.getElementById('author').value || 'Tác giả';
+            const excerpt = document.getElementById('excerpt').value || 'Tóm tắt nội dung sẽ hiển thị ở đây...';
+            
+            // Cập nhật ngày trong preview
+            const publishDate = document.getElementById('publishDate').value;
+            let displayDate;
+            if (publishDate) {
+                const date = new Date(publishDate);
+                displayDate = date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            } else {
+                const now = new Date();
+                displayDate = now.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+            document.getElementById('previewDate').textContent = displayDate;
+
+            document.getElementById('previewTitle').textContent = title;
+            document.getElementById('previewCategory').textContent = category;
+            document.getElementById('previewImage').src = imageUrl;
+            document.getElementById('previewAuthor').textContent = author;
+            document.getElementById('previewExcerpt').textContent = excerpt;
+        }
+
+        // Tạo bài viết mới
+        function newArticle() {
+            clearForm();
+            currentEditId = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Xóa form
+        function clearForm() {
+            document.getElementById('newsForm').reset();
+            currentEditId = null;
+            updatePreview();
+        }
+
+        // Lưu bài viết
+        async function saveArticle() {
+            // Lấy ngày đăng từ input hoặc sử dụng ngày hiện tại
+            const publishDateInput = document.getElementById('publishDate').value;
+            const publishDate = publishDateInput ? new Date(publishDateInput) : new Date();
+            
+            const article = {
+                id: currentEditId || Date.now(),
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                imageUrl: document.getElementById('imageUrl').value,
+                author: document.getElementById('author').value,
+                excerpt: document.getElementById('excerpt').value,
+                content: document.getElementById('content').value,
+                featured: document.getElementById('featured').checked,
+                date: publishDate.toISOString(),
+                views: currentEditId ? (newsData.find(item => item.id === currentEditId)?.views || 0) : Math.floor(Math.random() * 5000) + 100
+            };
+
+            if (currentEditId) {
+                // Cập nhật bài viết hiện có
+                const index = newsData.findIndex(item => item.id === currentEditId);
+                if (index !== -1) {
+                    newsData[index] = article;
+                }
+            } else {
+                // Thêm bài viết mới
+                newsData.unshift(article);
+            }
+
+            // Lưu lên server
+            const success = await saveDataToServer();
+            if (success) {
+                showSuccess();
+                clearForm();
+                loadNewsList();
+                updateStats();
+            }
+        }
+
+        // Hiển thị thông báo thành công
+        function showSuccess() {
+            const msg = document.getElementById('successMessage');
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Tải danh sách tin tức
+        function loadNewsList() {
+            const listElement = document.getElementById('newsList');
+            
+            if (newsData.length === 0) {
+                listElement.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Chưa có tin tức nào. Hãy thêm tin mới!</p>';
+                return;
+            }
+
+            listElement.innerHTML = newsData.map(article => `
+                <div class="news-item" data-id="${article.id}">
+                    <h3>${article.title}</h3>
+                    <div class="meta">
+                        <span>📁 ${article.category}</span>
+                        <span>✍️ ${article.author}</span>
+                        <span>📅 ${new Date(article.date).toLocaleDateString('vi-VN')}</span>
+                        <span>👁️ ${article.views} lượt xem</span>
+                        ${article.featured ? '<span style="color: #e74c3c; font-weight: bold;">⭐ Nổi bật</span>' : ''}
+                    </div>
+                    <div class="excerpt">${article.excerpt.substring(0, 150)}...</div>
+                    <div class="actions">
+                        <button class="btn-edit" onclick="editArticle(${article.id})">✏️ Sửa</button>
+                        <button class="btn-delete" onclick="deleteArticle(${article.id})">🗑️ Xóa</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Sửa bài viết
+        function editArticle(id) {
+            const article = newsData.find(item => item.id === id);
+            if (!article) return;
+
+            currentEditId = id;
+            document.getElementById('title').value = article.title;
+            document.getElementById('category').value = article.category;
+            document.getElementById('imageUrl').value = article.imageUrl;
+            document.getElementById('author').value = article.author;
+            document.getElementById('excerpt').value = article.excerpt;
+            document.getElementById('content').value = article.content;
+            document.getElementById('featured').checked = article.featured;
+
+            updatePreview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Highlight selected item
+            document.querySelectorAll('.news-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            document.querySelector(`[data-id="${id}"]`).classList.add('selected');
+        }
+
+            
+            // Chuyển đổi ngày ISO sang datetime-local format
+            if (article.date) {
+                const date = new Date(article.date);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                document.getElementById('publishDate').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            }
+        // Xóa bài viết
+        async function deleteArticle(id) {
+            if (!confirm('Bạn có chắc chắn muốn xóa bài viết này?')) return;
+
+            newsData = newsData.filter(item => item.id !== id);
+            const success = await saveDataToServer();
+            if (success) {
+                loadNewsList();
+                updateStats();
+                showSuccess();
+            }
+        }
+
+        // Lưu tất cả
+        async function saveAll() {
+            const success = await saveDataToServer();
+            if (success) {
+                showSuccess();
+            }
+        }
+
+        // Xuất dữ liệu
+        function exportData() {
+            const dataStr = JSON.stringify(newsData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `news-data-${Date.now()}.json`;
+            link.click();
+        }
+
+        // Cập nhật thống kê
+        function updateStats() {
+            document.getElementById('totalNews').textContent = newsData.length;
+            document.getElementById('featuredNews').textContent = newsData.filter(item => item.featured).length;
+        }
+    </script>
+</body>
+</html>

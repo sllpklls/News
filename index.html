@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Điện Tử</title>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="weather">
+                <span>🌤️ Hà Nội: 25°C</span>
+            </div>
+            <div class="date">
+                <span id="current-date"></span>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo">Báo Điện Tử</div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm kiếm tin tức...">
+                    <button>Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="active">Trang chủ</a>
+            <a href="#">Thời sự</a>
+            <a href="#">Thế giới</a>
+            <a href="#">Kinh doanh</a>
+            <a href="#">Công nghệ</a>
+            <a href="#">Giải trí</a>
+            <a href="#">Thể thao</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="featured-news">
+                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800" alt="Tin chính">
+                <div class="featured-content">
+                    <span class="category-badge">KINH DOANH</span>
+                    <h1>Phát triển bền vững: Xu hướng tất yếu của nền kinh tế hiện đại</h1>
+                    <div class="meta-info">
+                        <span>📅 13/01/2026</span> • <span>✍️ Nguyễn Văn A</span> • <span>👁️ 2.5K lượt xem</span>
+                    </div>
+                    <p>Trong bối cảnh biến đổi khí hậu và tài nguyên ngày càng khan hiếm, phát triển bền vững không còn là lựa chọn mà đã trở thành yêu cầu bắt buộc đối với các doanh nghiệp trên toàn cầu. Các tập đoàn lớn đang dần chuyển đổi mô hình kinh doanh để hướng tới mục tiêu net-zero...</p>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="trending-box">
+                    <h3>🔥 Tin nổi bật</h3>
+                    <div class="trending-item">
+                        <h4>Thị trường chứng khoán đạt mức cao kỷ lục</h4>
+                        <span>2 giờ trước</span>
+                    </div>
+                    <div class="trending-item">
+                        <h4>Ra mắt công nghệ AI mới trong y tế</h4>
+                        <span>4 giờ trước</span>
+                    </div>
+                    <div class="trending-item">
+                        <h4>Giải bóng đá quốc gia: Kết quả bất ngờ</h4>
+                        <span>5 giờ trước</span>
+                    </div>
+                    <div class="trending-item">
+                        <h4>Chính sách mới về thuế thu nhập cá nhân</h4>
+                        <span>6 giờ trước</span>
+                    </div>
+                </div>
+
+                <div class="latest-box">
+                    <h3>📰 Tin mới nhất</h3>
+                    <div class="latest-item">
+                        <h4>Khởi công dự án đường cao tốc mới</h4>
+                        <span>30 phút trước</span>
+                    </div>
+                    <div class="latest-item">
+                        <h4>Giá vàng trong nước tăng mạnh</h4>
+                        <span>1 giờ trước</span>
+                    </div>
+                    <div class="latest-item">
+                        <h4>Điện ảnh Việt Nam thắng lớn tại LHP quốc tế</h4>
+                        <span>2 giờ trước</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="news-grid">
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400" alt="Tin tức">
+                <div class="news-card-content">
+                    <span class="category-badge">CÔNG NGHỆ</span>
+                    <h3>Xu hướng công nghệ AI trong năm 2026</h3>
+                    <p>Trí tuệ nhân tạo tiếp tục phát triển với tốc độ chóng mặt, mở ra nhiều cơ hội mới cho các ngành công nghiệp...</p>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400" alt="Tin tức">
+                <div class="news-card-content">
+                    <span class="category-badge">THỂ THAO</span>
+                    <h3>Đội tuyển quốc gia chuẩn bị cho giải đấu lớn</h3>
+                    <p>HLV trưởng công bố danh sách triệu tập với nhiều gương mặt mới đầy triển vọng...</p>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=400" alt="Tin tức">
+                <div class="news-card-content">
+                    <span class="category-badge">DU LỊCH</span>
+                    <h3>Top 10 điểm đến hấp dẫn mùa hè này</h3>
+                    <p>Khám phá những địa điểm du lịch tuyệt vời cho kỳ nghỉ hè sắp tới của bạn...</p>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400" alt="Tin tức">
+                <div class="news-card-content">
+                    <span class="category-badge">KHOA HỌC</span>
+                    <h3>Phát hiện mới về vũ trụ từ kính thiên văn</h3>
+                    <p>Các nhà khoa học vừa công bố những hình ảnh ấn tượng về các thiên hà xa xôi...</p>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1565598620602-41edb2f7e2bb?w=400" alt="Tin tức">
+                <div class="news-card-content">
+                    <span class="category-badge">ẨM THỰC</span>
+                    <h3>Món ăn truyền thống đang được giới trẻ yêu thích</h3>
+                    <p>Sự kết hợp giữa truyền thống và hiện đại tạo nên làn sóng mới trong ẩm thực...</p>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400" alt="Tin tức">
+                <div class="news-card-content">
+                    <span class="category-badge">GIÁO DỤC</span>
+                    <h3>Chương trình đào tạo mới cho thế hệ tương lai</h3>
+                    <p>Bộ Giáo dục công bố kế hoạch cải cách giáo dục toàn diện trong năm học mới...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Về chúng tôi</h4>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                    <li><a href="#">Quảng cáo</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Chuyên mục</h4>
+                <ul>
+                    <li><a href="#">Thời sự</a></li>
+                    <li><a href="#">Thế giới</a></li>
+                    <li><a href="#">Kinh doanh</a></li>
+                    <li><a href="#">Công nghệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Hỗ trợ</h4>
+                <ul>
+                    <li><a href="#">Hướng dẫn</a></li>
+                    <li><a href="#">Điều khoản</a></li>
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Góp ý</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Theo dõi chúng tôi</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Youtube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Báo Điện Tử. Bản quyền thuộc về chúng tôi.
+        </div>
+    </footer>
+
+    <script src="script/script.js"></script>
+</body>
+</html>

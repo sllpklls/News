@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết tin tức - Báo Điện Tử</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/article.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="weather">
+                <span>🌤️ Hà Nội: 25°C</span>
+            </div>
+            <div class="date">
+                <span id="current-date"></span>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo">Báo Điện Tử</div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm kiếm tin tức...">
+                    <button>Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html">Trang chủ</a>
+            <a href="#">Thời sự</a>
+            <a href="#">Thế giới</a>
+            <a href="#">Kinh doanh</a>
+            <a href="#">Công nghệ</a>
+            <a href="#">Giải trí</a>
+            <a href="#">Thể thao</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="article-container">
+            <div class="breadcrumb">
+                <a href="index.html">Trang chủ</a> / <span id="breadcrumb-category">Chuyên mục</span> / <span id="breadcrumb-title">Bài viết</span>
+            </div>
+
+            <article class="article-content">
+                <div class="article-header">
+                    <span class="category-badge" id="article-category">CHUYÊN MỤC</span>
+                    <h1 id="article-title">Đang tải...</h1>
+                    <div class="article-meta">
+                        <span>📅 <span id="article-date"></span></span> •
+                        <span>✍️ <span id="article-author"></span></span> •
+                        <span>👁️ <span id="article-views"></span> lượt xem</span>
+                    </div>
+                </div>
+
+                <div class="article-image">
+                    <img id="article-img" src="" alt="">
+                </div>
+
+                <div class="article-excerpt">
+                    <p id="article-excerpt"></p>
+                </div>
+
+                <div class="article-body">
+                    <div id="article-content"></div>
+                </div>
+
+                <div class="article-footer">
+                    <div class="social-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <button class="share-btn facebook">📘 Facebook</button>
+                            <button class="share-btn twitter">🐦 Twitter</button>
+                            <button class="share-btn linkedin">💼 LinkedIn</button>
+                            <button class="share-btn copy">🔗 Sao chép link</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <div class="related-news">
+                <h3>📰 Tin liên quan</h3>
+                <div id="related-news-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Về chúng tôi</h4>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                    <li><a href="#">Quảng cáo</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Chuyên mục</h4>
+                <ul>
+                    <li><a href="#">Thời sự</a></li>
+                    <li><a href="#">Thế giới</a></li>
+                    <li><a href="#">Kinh doanh</a></li>
+                    <li><a href="#">Công nghệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Hỗ trợ</h4>
+                <ul>
+                    <li><a href="#">Hướng dẫn</a></li>
+                    <li><a href="#">Điều khoản</a></li>
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Góp ý</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Theo dõi chúng tôi</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Youtube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Báo Điện Tử. Bản quyền thuộc về chúng tôi.
+        </div>
+    </footer>
+
+    <script src="script/article.js"></script>
+</body>
+</html>
