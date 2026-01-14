@@ -61,7 +61,7 @@ async function loadArticle(id) {
 
 // Hiển thị chi tiết bài viết
 function displayArticle(article) {
-    document.title = article.title + ' - Báo Điện Tử';
+    document.title = article.title + ' - The Official Review';
     
     document.getElementById('breadcrumb-category').textContent = article.category;
     document.getElementById('breadcrumb-title').textContent = article.title.substring(0, 30) + '...';
