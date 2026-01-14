@@ -13,14 +13,30 @@ function updateDate() {
 
 updateDate();
 
-// Lấy ID bài viết từ URL
+// Hiển thị trang 404
+function show404Page() {
+    document.body.innerHTML = `
+        <div style="text-align: center; padding: 100px 20px; font-family: 'Segoe UI', sans-serif;">
+            <h1 style="font-size: 120px; margin: 0; color: #c41e3a;">404</h1>
+            <h2 style="font-size: 32px; margin: 20px 0; color: #333;">Không tìm thấy trang</h2>
+            <p style="font-size: 18px; color: #666; margin-bottom: 30px;">URL không hợp lệ hoặc bài viết không tồn tại.</p>
+            <button onclick="window.location.href='index.html'" style="padding: 15px 30px; background: #c41e3a; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;">
+                🏠 Về trang chủ
+            </button>
+        </div>
+    `;
+}
+
+// Lấy ID bài viết và author từ URL
 const urlParams = new URLSearchParams(window.location.search);
 const articleId = urlParams.get('id');
+const authorParam = urlParams.get('author');
 
-if (articleId) {
-    loadArticle(articleId);
+if (!articleId || !authorParam) {
+    // Hiển thị page 404
+    show404Page();
 } else {
-    window.location.href = 'index.html';
+    loadArticle(articleId);
 }
 
 // Load chi tiết bài viết
@@ -35,8 +51,7 @@ async function loadArticle(id) {
             displayArticle(article);
             loadRelatedNews(data.news, article.category, article.id);
         } else {
-            alert('Không tìm thấy bài viết!');
-            window.location.href = 'index.html';
+            show404Page();
         }
     } catch (error) {
         console.error('Lỗi khi tải bài viết:', error);
@@ -80,7 +95,7 @@ function loadRelatedNews(allNews, category, currentId) {
     
     if (related.length > 0) {
         relatedGrid.innerHTML = related.map(article => `
-            <div class="news-card" onclick="window.location.href='article.html?id=${article.id}'">
+            <div class="news-card" onclick="window.location.href='article.html?id=${article.id}&author=${encodeURIComponent(article.author)}'">
                 <img src="${article.imageUrl}" alt="${article.title}">
                 <div class="news-card-content">
                     <span class="category-badge">${article.category}</span>

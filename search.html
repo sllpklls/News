@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm kiếm - Báo Điện Tử</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/search.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="weather">
+                <span>🌤️ Hà Nội: 25°C</span>
+            </div>
+            <div class="date">
+                <span id="current-date"></span>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <a href="index.html" class="logo">Báo Điện Tử</a>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm tin tức...">
+                    <button onclick="performSearch()">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html">Trang chủ</a>
+            <a href="#">Thời sự</a>
+            <a href="#">Thế giới</a>
+            <a href="#">Kinh doanh</a>
+            <a href="#">Công nghệ</a>
+            <a href="#">Giải trí</a>
+            <a href="#">Thể thao</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-header">
+            <h1>Kết quả tìm kiếm</h1>
+            <div class="search-info">
+                <span id="search-query"></span>
+                <span id="search-count"></span>
+            </div>
+        </div>
+
+        <div class="search-filters">
+            <label>Lọc theo chuyên mục:</label>
+            <select id="category-filter" onchange="filterResults()">
+                <option value="">Tất cả</option>
+                <option value="THỜI SỰ">Thời sự</option>
+                <option value="THẾ GIỚI">Thế giới</option>
+                <option value="KINH DOANH">Kinh doanh</option>
+                <option value="CÔNG NGHỆ">Công nghệ</option>
+                <option value="GIẢI TRÍ">Giải trí</option>
+                <option value="THỂ THAO">Thể thao</option>
+                <option value="KHOA HỌC">Khoa học</option>
+                <option value="ẨM THỰC">Ẩm thực</option>
+                <option value="DU LỊCH">Du lịch</option>
+                <option value="GIÁO DỤC">Giáo dục</option>
+            </select>
+        </div>
+
+        <div id="search-results" class="search-results"></div>
+
+        <div id="no-results" class="no-results" style="display: none;">
+            <h2>😔 Không tìm thấy kết quả</h2>
+            <p>Không có bài viết nào phù hợp với từ khóa của bạn.</p>
+            <button onclick="window.location.href='index.html'">Về trang chủ</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Về chúng tôi</h4>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                    <li><a href="#">Quảng cáo</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Chuyên mục</h4>
+                <ul>
+                    <li><a href="#">Thời sự</a></li>
+                    <li><a href="#">Thế giới</a></li>
+                    <li><a href="#">Kinh doanh</a></li>
+                    <li><a href="#">Công nghệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Hỗ trợ</h4>
+                <ul>
+                    <li><a href="#">Hướng dẫn</a></li>
+                    <li><a href="#">Điều khoản</a></li>
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Góp ý</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Theo dõi chúng tôi</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Youtube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Báo Điện Tử. Bản quyền thuộc về chúng tôi.
+        </div>
+    </footer>
+
+    <script src="script/search.js"></script>
+</body>
+</html>

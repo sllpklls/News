@@ -14,6 +14,24 @@ function updateDate() {
 updateDate();
 loadNews();
 
+// Xử lý tìm kiếm
+function performSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    if (query) {
+        window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+    }
+}
+
+// Enter để tìm kiếm
+const searchInput = document.getElementById('search-input');
+if (searchInput) {
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+}
+
 // Load dữ liệu từ API
 async function loadNews() {
     try {
@@ -49,8 +67,8 @@ function displayFeatured(article) {
     if (!featuredSection) return;
     
     featuredSection.innerHTML = `
-        <img src="${article.imageUrl}" alt="${article.title}" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}'">
-        <div class="featured-content" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}'">
+        <img src="${article.imageUrl}" alt="${article.title}" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}&author=${encodeURIComponent(article.author)}'">
+        <div class="featured-content" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}&author=${encodeURIComponent(article.author)}'">
             <span class="category-badge">${article.category}</span>
             <h1>${article.title}</h1>
             <div class="meta-info">
@@ -70,7 +88,7 @@ function displayTrending(articles) {
     let html = '<h3>🔥 Tin nổi bật</h3>';
     articles.forEach(article => {
         html += `
-            <div class="trending-item" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}'">
+            <div class="trending-item" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}&author=${encodeURIComponent(article.author)}'">
                 <h4>${article.title}</h4>
                 <span>${getTimeAgo(article.date)}</span>
             </div>
@@ -86,7 +104,7 @@ function displayLatest(articles) {
     let html = '<h3>📰 Tin mới nhất</h3>';
     articles.forEach(article => {
         html += `
-            <div class="latest-item" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}'">
+            <div class="latest-item" style="cursor: pointer;" onclick="window.location.href='article.html?id=${article.id}&author=${encodeURIComponent(article.author)}'">
                 <h4>${article.title}</h4>
                 <span>${getTimeAgo(article.date)}</span>
             </div>
@@ -100,7 +118,7 @@ function displayNewsGrid(articles) {
     if (!newsGrid) return;
     
     newsGrid.innerHTML = articles.map(article => `
-        <div class="news-card" onclick="window.location.href='article.html?id=${article.id}'">
+        <div class="news-card" onclick="window.location.href='article.html?id=${article.id}&author=${encodeURIComponent(article.author)}'">
             <img src="${article.imageUrl}" alt="${article.title}">
             <div class="news-card-content">
                 <span class="category-badge">${article.category}</span>
