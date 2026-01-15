@@ -37,8 +37,9 @@ func main() {
 	// API endpoints
 	http.HandleFunc("/api/news", handleNews)
 
-	// File server cho các file tĩnh
-	http.Handle("/", http.FileServer(http.Dir(".")))
+	// File server cho các file tĩnh với middleware tắt cache
+	fs := http.FileServer(http.Dir("."))
+	http.Handle("/", noCacheMiddleware(fs))
 
 	// Khởi động server
 	port := ":8080"
@@ -50,6 +51,24 @@ func main() {
 	}
 }
 
+// noCacheMiddleware thêm headers để tắt cache
+func noCacheMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Tắt cache cho HTML files
+		if r.URL.Path == "/" || r.URL.Path == "/index.html" ||
+			r.URL.Path == "/article.html" || r.URL.Path == "/editor.html" ||
+			r.URL.Path == "/search.html" {
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+		} else {
+			// Cache cho static assets (CSS, JS) - nhưng kiểm tra thay đổi
+			w.Header().Set("Cache-Control", "public, max-age=300") // 5 phút
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 // handleNews xử lý GET và POST cho dữ liệu tin tức
 func handleNews(w http.ResponseWriter, r *http.Request) {
 	// Cho phép CORS
@@ -57,6 +76,11 @@ func handleNews(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "application/json")
+
+	// Tắt cache cho API endpoint
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
 
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
