@@ -414,7 +414,7 @@
         <div class="editor-grid">
             <div class="editor-section">
                 <h2>📝 Biên tập tin tức</h2>
-                <form id="newsForm">
+                <form id="newsForm" novalidate>
                     <div class="form-group">
                         <label>Tiêu đề</label>
                         <input type="text" id="title" placeholder="Nhập tiêu đề bài viết..." required>
@@ -439,8 +439,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label>URL hình ảnh</label>
-                        <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" required>
+                        <label>Hình ảnh</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="file" id="imageFile" accept="image/*" style="flex: 1;">
+                            <span style="color: #666;">hoặc</span>
+                            <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" style="flex: 1;">
+                        </div>
+                        <small style="color: #666; display: block; margin-top: 5px;">
+                            📁 Chọn file từ máy tính hoặc nhập URL ảnh
+                        </small>
                     </div>
 
                     <div class="form-group">
@@ -498,6 +505,9 @@
             <div id="newsList"></div>
         </div>
     </div>
+
+    <!-- Script upload ảnh -->
+    <script src="script/upload.js"></script>
 
     <script>
         // Dữ liệu tin tức
@@ -566,11 +576,16 @@
                 document.getElementById(id).addEventListener('input', updatePreview);
             });
 
+            // Lắng nghe thay đổi file ảnh
+            document.getElementById('imageFile').addEventListener('change', handleImageUpload);
+
             document.getElementById('newsForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 saveArticle();
             });
         }
+
+
 
         // Cập nhật preview
         function updatePreview() {
@@ -609,12 +624,59 @@
         // Xóa form
         function clearForm() {
             document.getElementById('newsForm').reset();
+            document.getElementById('imageFile').value = '';
             currentEditId = null;
             updatePreview();
         }
 
         // Lưu bài viết
         async function saveArticle() {
+            // Kiểm tra đang upload
+            if (isUploading) {
+                alert('Đang upload ảnh, vui lòng đợi...');
+                return;
+            }
+            
+            // Validate các trường bắt buộc
+            const title = document.getElementById('title').value.trim();
+            const category = document.getElementById('category').value;
+            const author = document.getElementById('author').value.trim();
+            const excerpt = document.getElementById('excerpt').value.trim();
+            const content = document.getElementById('content').value.trim();
+            
+            if (!title) {
+                alert('Vui lòng nhập tiêu đề!');
+                return;
+            }
+            
+            if (!category) {
+                alert('Vui lòng chọn chuyên mục!');
+                return;
+            }
+            
+            if (!author) {
+                alert('Vui lòng nhập tên tác giả!');
+                return;
+            }
+            
+            if (!excerpt) {
+                alert('Vui lòng nhập tóm tắt nội dung!');
+                return;
+            }
+            
+            if (!content) {
+                alert('Vui lòng nhập nội dung đầy đủ!');
+                return;
+            }
+            
+            // Kiểm tra xem có URL ảnh không
+            let imageUrl = document.getElementById('imageUrl').value.trim();
+            
+            if (!imageUrl) {
+                alert('Vui lòng chọn ảnh từ máy tính hoặc nhập URL ảnh!');
+                return;
+            }
+
             // Lấy ngày đăng từ input hoặc sử dụng ngày hiện tại
             const publishDateInput = document.getElementById('publishDate').value;
             const publishDate = publishDateInput ? new Date(publishDateInput) : new Date();
@@ -623,7 +685,7 @@
                 id: currentEditId || Date.now(),
                 title: document.getElementById('title').value,
                 category: document.getElementById('category').value,
-                imageUrl: document.getElementById('imageUrl').value,
+                imageUrl: imageUrl,
                 author: document.getElementById('author').value,
                 excerpt: document.getElementById('excerpt').value,
                 content: document.getElementById('content').value,

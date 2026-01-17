@@ -29,6 +29,9 @@ COPY data.json .
 COPY style/ ./style/
 COPY script/ ./script/
 
+# Tạo thư mục uploads và set quyền
+RUN mkdir -p /app/uploads && chmod 777 /app/uploads
+
 # Expose port
 EXPOSE 8080
 

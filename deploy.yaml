@@ -5,7 +5,7 @@ metadata:
   labels:
     app: news-app
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: news-app
@@ -16,30 +16,33 @@ spec:
     spec:
       containers:
       - name: news-app
-        image: news-app:latest
-        imagePullPolicy: IfNotPresent
+        image: hoangnghiathai01/news:v1.0.0
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
           name: http
+          protocol: TCP
         resources:
           requests:
             memory: "64Mi"
             cpu: "100m"
           limits:
-            memory: "128Mi"
-            cpu: "200m"
+            memory: "256Mi"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /
             port: 8080
-          initialDelaySeconds: 10
+          initialDelaySeconds: 15
           periodSeconds: 10
+          timeoutSeconds: 3
         readinessProbe:
           httpGet:
             path: /
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
+          timeoutSeconds: 2
         volumeMounts:
         - name: data-volume
           mountPath: /app/data.json
@@ -61,7 +64,7 @@ metadata:
   labels:
     app: news-app
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 80
     targetPort: 8080
@@ -71,16 +74,44 @@ spec:
     app: news-app
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: news-data-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /var/lib/news-data
+    type: DirectoryOrCreate
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: news-data-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: standard
+  volumeName: news-data-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: news-uploads-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /var/lib/news-uploads
+    type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -88,8 +119,8 @@ metadata:
   name: news-uploads-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
-  storageClassName: standard
+  volumeName: news-uploads-pv

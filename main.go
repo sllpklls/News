@@ -5,8 +5,12 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
+	"time"
 )
 
 const dataFile = "data.json"
@@ -34,8 +38,14 @@ type Article struct {
 }
 
 func main() {
+	// Tạo thư mục uploads nếu chưa tồn tại
+	if err := os.MkdirAll("uploads", 0755); err != nil {
+		log.Fatal("Không thể tạo thư mục uploads:", err)
+	}
+
 	// API endpoints
 	http.HandleFunc("/api/news", handleNews)
+	http.HandleFunc("/api/upload", handleUpload)
 
 	// File server cho các file tĩnh với middleware tắt cache
 	fs := http.FileServer(http.Dir("."))
@@ -129,4 +139,94 @@ func handleNews(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Error(w, "Method không được hỗ trợ", http.StatusMethodNotAllowed)
 	}
+}
+
+// handleUpload xử lý upload ảnh
+func handleUpload(w http.ResponseWriter, r *http.Request) {
+	// Cho phép CORS
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.Method != "POST" {
+		http.Error(w, "Method không được hỗ trợ", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Parse multipart form (giới hạn 10MB)
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		http.Error(w, "File quá lớn (tối đa 10MB)", http.StatusBadRequest)
+		return
+	}
+
+	// Lấy file từ form
+	file, header, err := r.FormFile("image")
+	if err != nil {
+		http.Error(w, "Không thể đọc file", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Kiểm tra loại file (chỉ cho phép ảnh)
+	allowedTypes := map[string]bool{
+		"image/jpeg": true,
+		"image/jpg":  true,
+		"image/png":  true,
+		"image/gif":  true,
+		"image/webp": true,
+	}
+
+	contentType := header.Header.Get("Content-Type")
+	if !allowedTypes[contentType] {
+		http.Error(w, "Chỉ cho phép upload file ảnh (JPEG, PNG, GIF, WebP)", http.StatusBadRequest)
+		return
+	}
+
+	// Tạo tên file unique
+	ext := filepath.Ext(header.Filename)
+	filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
+	filepath := filepath.Join("uploads", filename)
+
+	// Tạo file trên server
+	dst, err := os.Create(filepath)
+	if err != nil {
+		http.Error(w, "Không thể lưu file", http.StatusInternalServerError)
+		return
+	}
+	defer dst.Close()
+
+	// Copy file content
+	if _, err := io.Copy(dst, file); err != nil {
+		http.Error(w, "Lỗi khi lưu file", http.StatusInternalServerError)
+		return
+	}
+
+	// Trả về URL của file
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"success": "true",
+		"url":     "/" + filepath,
+	})
+}
+
+// validateImage kiểm tra file có phải là ảnh hợp lệ không
+func validateImage(file multipart.File) bool {
+	// Đọc 512 bytes đầu để detect file type
+	buffer := make([]byte, 512)
+	_, err := file.Read(buffer)
+	if err != nil {
+		return false
+	}
+
+	// Reset file pointer
+	file.Seek(0, 0)
+
+	// Detect content type
+	contentType := http.DetectContentType(buffer)
+	return strings.HasPrefix(contentType, "image/")
 }
